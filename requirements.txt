@@ -15,3 +15,9 @@ faiss-cpu
 numpy
 
 jinja2
+
+
+pandas
+python-docx
+PyPDF2
+openpyxl

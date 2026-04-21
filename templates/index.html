@@ -2,22 +2,38 @@
 <html lang="ar">
 <head>
 <meta charset="UTF-8">
-<title>مولد المحتوى</title>
+<title>Write Like Me</title>
 <link rel="stylesheet" href="/static/style.css">
 </head>
 <body>
 
 <div class="container">
-    <h1>🔥 مولد محتوى بأسلوبك</h1>
+
+    <h1>🔥 Write Like Me AI</h1>
 
     <form id="form">
         <textarea id="topic" placeholder="اكتب الموضوع..."></textarea>
+
+        <select id="length">
+            <option value="short">قصير (تغريدة)</option>
+            <option value="medium">متوسط (منشور)</option>
+            <option value="long">طويل (مقال)</option>
+        </select>
+
         <button type="submit">توليد</button>
     </form>
 
     <div id="result"></div>
 
-    <a href="/ingest">إضافة كتابات</a>
+    <hr>
+
+    <h3>📥 رفع ملفات</h3>
+
+    <form id="uploadForm">
+        <input type="file" id="file" />
+        <button type="submit">رفع</button>
+    </form>
+
 </div>
 
 <script src="/static/app.js"></script>
