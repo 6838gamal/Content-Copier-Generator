@@ -1,14 +1,10 @@
-from sentence_transformers import SentenceTransformer
 import faiss
 import pickle
+import numpy as np
 import os
-from dotenv import load_dotenv
 
-load_dotenv()
-
-MODEL_NAME = os.getenv("EMBEDDING_MODEL")
-
-model = SentenceTransformer(MODEL_NAME)
+def fake_embed(text):
+    return np.array([hash(text) % 1000], dtype='float32')
 
 def load_texts():
     with open("data/texts.txt", "r", encoding="utf-8") as f:
@@ -18,10 +14,9 @@ def load_texts():
 
 texts = load_texts()
 
-embeddings = model.encode(texts)
+embeddings = np.array([fake_embed(t) for t in texts])
 
-dim = embeddings.shape[1]
-index = faiss.IndexFlatL2(dim)
+index = faiss.IndexFlatL2(1)
 index.add(embeddings)
 
 os.makedirs("db", exist_ok=True)
@@ -31,4 +26,4 @@ faiss.write_index(index, "db/faiss.index")
 with open("db/texts.pkl", "wb") as f:
     pickle.dump(texts, f)
 
-print("✅ تم بناء قاعدة الأسلوب")
+print("OK")

@@ -1,25 +1,21 @@
 import faiss
 import pickle
-import os
-from sentence_transformers import SentenceTransformer
-from dotenv import load_dotenv
-
-load_dotenv()
-
-MODEL_NAME = os.getenv("EMBEDDING_MODEL")
+import numpy as np
 
 class RAGEngine:
     def __init__(self):
-        self.model = SentenceTransformer(MODEL_NAME)
         self.index = faiss.read_index("db/faiss.index")
 
         with open("db/texts.pkl", "rb") as f:
             self.texts = pickle.load(f)
 
-    def retrieve(self, topic, k=5):
-        query = f"نص تحفيزي مباشر بأسلوب قوي عن {topic}"
-        emb = self.model.encode([query])
+    def fake_embed(self, text):
+        # embedding بسيط جدًا لتجنب torch
+        return np.array([hash(text) % 1000], dtype='float32')
 
-        _, idx = self.index.search(emb, k)
+    def retrieve(self, topic, k=5):
+        query_vec = self.fake_embed(topic).reshape(1, -1)
+
+        _, idx = self.index.search(query_vec, k)
 
         return [self.texts[i] for i in idx[0]]
